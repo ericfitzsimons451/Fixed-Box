@@ -22,3 +22,24 @@ export const getSpecies = (people) => {
   })
   return Promise.all(speciesPromises)
 }
+
+export const getResidents = async (planetsArray) => {
+  const planets = planetsArray.map(async planet => {
+    const residentPromises = planet.residents.map(async residentLink => {
+      return await fetchAnything(residentLink)
+    })
+    const residents = await Promise.all(residentPromises)
+    const residentNames = await cleanResidents(residents)
+    return {
+      Name: planet.name,
+      Residents: residentNames
+    }
+  })
+  return Promise.all(planets)
+}
+
+export const cleanResidents = (residents) => {
+  return residents.map(resident => {
+    return resident.name
+  })
+}
