@@ -5,13 +5,16 @@ import Header from '../Header/Header'
 import Nav from '../Nav/Nav'
 import Display from '../Display/Display'
 import fetchPeople from '../../fetchPeople'
+import fetchPlanets from '../../fetchPlanets'
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
       film: {},
-      people: []
+      people: [],
+      planets: [],
+      error: ''
     }
   }
 
@@ -34,11 +37,24 @@ class App extends Component {
     }
   }
 
+  getPlanets = async () => {
+    const url = 'https://www.swapi.co/api/planets'
+    if (!this.state.planets.length) {
+      try {
+        const planets = await fetchPlanets(url)
+        this.setState({ planets })
+      } catch(error) {
+        this.setState({ error: error.message })
+      }
+    }
+  }
+
   render() {
     return(
       <div className="App">
         <Header film={this.state.film} />
-        <Nav getPeople={this.getPeople} />
+        <Nav getPeople={this.getPeople}
+             getPlanets={this.getPlanets} />
         <Display displayInfo={this.state}/>
       </div>
     )
