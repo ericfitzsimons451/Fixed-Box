@@ -6,6 +6,7 @@ import Nav from '../Nav/Nav'
 import Display from '../Display/Display'
 import fetchPeople from '../../fetchPeople'
 import fetchPlanets from '../../fetchPlanets'
+import fetchVehicles from '../../fetchVehicles'
 
 class App extends Component {
   constructor() {
@@ -14,7 +15,9 @@ class App extends Component {
       film: {},
       people: [],
       planets: [],
-      error: ''
+      vehicles: [],
+      error: '',
+      toView: ''
     }
   }
 
@@ -30,10 +33,12 @@ class App extends Component {
     if (!this.state.people.length) {
       try {
         const people = await fetchPeople(url)
-        this.setState({ people })
+        this.setState({ people, toView: people })
       } catch(error) {
         this.setState({ error: error.message })
       }
+    } else if (this.state.people.length) {
+      this.setState({ toView: this.state.people})
     }
   }
 
@@ -42,10 +47,26 @@ class App extends Component {
     if (!this.state.planets.length) {
       try {
         const planets = await fetchPlanets(url)
-        this.setState({ planets })
+        this.setState({ planets, toView: planets })
       } catch(error) {
         this.setState({ error: error.message })
       }
+    } else if (this.state.planets.length) {
+      this.setState({ toView: this.state.planets})
+    }
+  }
+
+  getVehicles = async () => {
+    const url = 'https://www.swapi.co/api/vehicles'
+    if (!this.state.vehicles.length) {
+      try {
+        const vehicles = await fetchVehicles(url)
+        this.setState({ vehicles, toView: vehicles })
+      } catch (error) {
+        this.setState({error: error.message})
+      }
+    } else if (this.state.vehicles) {
+      this.setState({ toView: this.state.vehicles})
     }
   }
 
@@ -54,8 +75,9 @@ class App extends Component {
       <div className="App">
         <Header film={this.state.film} />
         <Nav getPeople={this.getPeople}
-             getPlanets={this.getPlanets} />
-        <Display displayInfo={this.state}/>
+             getPlanets={this.getPlanets}
+             getVehicles={this.getVehicles} />
+        <Display displayInfo={this.state.toView}/>
       </div>
     )
   }
