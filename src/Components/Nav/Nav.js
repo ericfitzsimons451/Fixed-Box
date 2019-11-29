@@ -6,7 +6,7 @@ export const Nav = (props) => {
     <div>
       <button type='button' onClick={props.getPeople}>People</button>
       <button type='button' onClick={props.getPlanets}>Planets</button>
-      <button type='button'>Vehicles</button>
+      <button type='button' onClick={props.getVehicles}>Vehicles</button>
       <button type='button'>Favorites</button>
     </div>
   )

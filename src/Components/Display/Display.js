@@ -3,12 +3,18 @@ import './Display.scss'
 import Card from '../Card/Card'
 
 export const Display = ({displayInfo}) => {
-  const displayCards = displayInfo.people.map(item => {
-    return <Card item={item} key={item.name} />
-  })
+  let displayCards; 
+  if (displayInfo) {
+    displayCards = displayInfo.map(item => {
+      return <Card item={item} key={item.name} />
+    })
+  }
+
   return(
     <div className="Display">
+      {/* { displayPlanets } */}
       { displayCards }
+      {/* { displayVehicles } */}
     </div>
   )
 }
